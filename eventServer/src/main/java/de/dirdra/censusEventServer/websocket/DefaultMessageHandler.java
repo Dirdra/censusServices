@@ -1,30 +1,17 @@
 package de.dirdra.censusEventServer.websocket;
 
-import java.io.IOException;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-
-import org.apache.activemq.command.ActiveMQTextMessage;
-import org.apache.activemq.command.ActiveMQTopic;
 import org.apache.camel.component.jackson.JacksonDataFormat;
-import org.apache.camel.model.dataformat.JaxbDataFormat;
-import org.apache.camel.model.dataformat.JsonDataFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.dirdra.census.model.ps2v2.Event;
 import de.dirdra.census.model.ps2v2.EventResponseType;
+import de.dirdra.censusEventServer.interfaces.PlayerService;
 
 public class DefaultMessageHandler implements WebSocketMessageHandler {
 	
@@ -35,6 +22,9 @@ public class DefaultMessageHandler implements WebSocketMessageHandler {
 	
 	@Autowired
 	private ObjectMapper objectMapper;
+	
+	@Autowired
+	private PlayerService playerSerivce;
 
 	@Override
 	public void handleMessage(final WebSocketMessage<?> message) {
@@ -64,6 +54,7 @@ public class DefaultMessageHandler implements WebSocketMessageHandler {
 			final EventResponseType event = new JacksonDataFormat(EventResponseType.class).getObjectMapper().readValue(textMessage.getPayload(), EventResponseType.class);
 			if (event.getPayload() != null) {
 				LOG.debug("Event > {}, characterID > {}", event.getPayload().getEvent_Name(), event.getPayload().getCharacter_Id());
+				LOG.debug("Charname > {}", playerSerivce.getCharacternameById(event.getPayload().getCharacter_Id()));
 			}
 		} catch (Exception e) {
 			LOG.warn("Error on proccessing event", e);
@@ -76,5 +67,13 @@ public class DefaultMessageHandler implements WebSocketMessageHandler {
 	
 	public void setJmsTemplate(JmsTemplate jmsTemplate) {
 		this.jmsTemplate = jmsTemplate;
+	}
+	
+	public PlayerService getPlayerSerivce() {
+		return playerSerivce;
+	}
+	
+	public void setPlayerSerivce(PlayerService playerSerivce) {
+		this.playerSerivce = playerSerivce;
 	}
 }
