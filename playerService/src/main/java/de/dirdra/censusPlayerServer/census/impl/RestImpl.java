@@ -20,8 +20,11 @@ public class RestImpl implements CensusAPI {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(RestImpl.class);
 	
-	@Value(value = "${dbg.census.url:http://census.daybreakgames.com/xml/get/ps2:v2/}")
-	String url;
+	@Value(value = "${dbg.census.url:http://census.daybreakgames.com/{serviceID}/xml/get/ps2:v2/}")
+	private String url;
+	
+	@Value(value = "${dbg.census.serviceID}")
+	private String serviceID;
 	
 	@Autowired
 	RestTemplate restTemplate;
@@ -34,7 +37,7 @@ public class RestImpl implements CensusAPI {
 	public Character getCharacter(String id) {
 		LOG.debug("getCharacter id > {}", id);
 		
-		final String response = restTemplate.getForObject(url+"character?character_id={id}", String.class, id);
+		final String response = restTemplate.getForObject(url+"character?character_id={id}", String.class, serviceID, id);
 		LOG.debug("response > {}", response);
 		
 		
@@ -49,4 +52,19 @@ public class RestImpl implements CensusAPI {
 		return chr;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getServiceID() {
+		return serviceID;
+	}
+
+	public void setServiceID(String serviceID) {
+		this.serviceID = serviceID;
+	}
 }
