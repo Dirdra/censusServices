@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import de.dirdra.census.model.ps2v2.Character;
-import de.dirdra.census.model.ps2v2.CharacterList;
+import de.dirdra.census.model.ps2v2.Character_List;
 import de.dirdra.censusPlayerServer.census.CensusAPI;
 
 @Component
@@ -40,7 +40,7 @@ public class RestImpl implements CensusAPI {
 		
 		Character chr = null;
 		try {
-			CharacterList unmarshalledResponse = ((JAXBElement<CharacterList>) marshaller.unmarshal(new StringSource(response))).getValue();
+			Character_List unmarshalledResponse = ((JAXBElement<Character_List>) marshaller.unmarshal(new StringSource(response))).getValue();
 			chr = unmarshalledResponse.getCharacter().get(0);
 		} catch (Exception e) {
 			LOG.warn("Error in reading response of \""+response+"\"", e);
