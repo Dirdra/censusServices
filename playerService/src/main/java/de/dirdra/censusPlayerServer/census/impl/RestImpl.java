@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -34,6 +35,7 @@ public class RestImpl implements CensusAPI {
 
 	@SuppressWarnings("unchecked")
 	@Override
+	@Cacheable(cacheNames="character")
 	public Character getCharacter(String id) {
 		LOG.debug("getCharacter id > {}", id);
 		

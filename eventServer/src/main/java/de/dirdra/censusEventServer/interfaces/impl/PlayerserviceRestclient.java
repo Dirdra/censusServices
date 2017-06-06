@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import de.dirdra.census.model.ps2v2.Character;
 
-@FeignClient(value = "playerServer", name = "playerServer")
+@FeignClient(value = "playerServer", name = "playerServer", fallback = PlayerserviceRestclientFallback.class)
 public interface PlayerserviceRestclient {
 	@RequestMapping(method=RequestMethod.GET, path="/import/character/{id}")
 	Character getCharacterById(@PathVariable("id") final String id);

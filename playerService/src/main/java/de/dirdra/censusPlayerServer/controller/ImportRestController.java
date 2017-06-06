@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,16 @@ public class ImportRestController {
 	@RequestMapping(method=RequestMethod.GET, path="/character")
 	public ResponseEntity<Character> importCharacterById(@RequestParam(name="id") final String id) {
 		LOG.debug("requestParam id > {}", id);
+		
+		final Character character = censusAPI.getCharacter(id);
+		
+		final ResponseEntity<Character> result = new ResponseEntity<Character>(character, HttpStatus.OK);
+		return result;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, path="/character/{id}")
+	public ResponseEntity<Character> importCharacterByUrlID(@PathVariable("id") final String id) {
+		LOG.debug("pathVar-id > {}", id);
 		
 		final Character character = censusAPI.getCharacter(id);
 		
