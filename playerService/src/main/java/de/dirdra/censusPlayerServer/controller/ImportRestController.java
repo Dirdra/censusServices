@@ -42,4 +42,13 @@ public class ImportRestController {
 		final ResponseEntity<Character> result = new ResponseEntity<Character>(character, HttpStatus.OK);
 		return result;
 	}
+	
+	@RequestMapping(method = RequestMethod.POST, path = "/{id}")
+	public ResponseEntity<Boolean> importCharacterToDB(@PathVariable("id") final String id) {
+		LOG.debug("pathVar-id > {}", id);
+		
+		final boolean imported = censusAPI.importCharacter(id);
+		
+		return new ResponseEntity<Boolean>(imported, HttpStatus.OK);
+	}
 }
