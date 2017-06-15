@@ -64,6 +64,11 @@
 			<artifactId>census-model-ps2v2</artifactId>
 			<version>0.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>de.dirdra</groupId>
+			<artifactId>PlayerServer</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
